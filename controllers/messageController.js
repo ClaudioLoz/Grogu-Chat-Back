@@ -16,6 +16,28 @@ module.exports.addMessage = async (req, res, next) => {
   }
 };
 
+
+module.exports.getMessagesStatistics = async (req, res, next) => {
+  try {
+    const { from, to } = req.body;
+
+    const counters = await Messages.aggregate([
+      { $group: { _id: '$message' } },
+      { $count: 'countOfUniqueMessages' }
+    ]);
+    console.log(counters);
+    // const statistics = messages.map((msg) => {
+    //   return {
+    //     fromSelf: msg.sender.toString() === from,
+    //     message: msg.message.text,
+    //   };
+    // });
+    res.json({ msg: "estadisticas no implementadas del todo" });
+  } catch (ex) {
+    next(ex);
+  }
+};
+
 module.exports.getMessages = async (req, res, next) => {
     try {
       const { from, to } = req.body;
@@ -37,4 +59,7 @@ module.exports.getMessages = async (req, res, next) => {
       next(ex);
     }
   };
+  
+
+
   
